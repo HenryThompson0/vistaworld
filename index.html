@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="https://ih1.redbubble.net/image.2806141849.4103/raf,360x360,075,t,fafafa:ca443f4786.jpg">
+    <title>[Vistaworld]</title>
+    <style>
+      body {
+        background-image: url('https://opengameart.org/sites/default/files/oga-textures/111494/texture_01.png');
+        background-size: 15%;
+        background-position: center;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: white;
+        flex-direction: column; /* Stacks content vertically */
+      }
+      a {
+        font-size: 3em;
+        text-align: center;
+        mix-blend-mode: difference;
+        text-shadow: 20px 20px 20px black;
+        color: white;
+        cursor: pointer; /* Makes the text look clickable */
+        margin-bottom: 20px; /* Adds space below the link */
+      }
+      #embed-container {
+        display: none; /* Hide embed initially */
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <!-- Link acting as a button -->
+      <a href="javascript:void(0);" onclick="toggleEmbed()">Enter</a>
+      
+      <!-- Embed content hidden initially -->
+      <div id="embed-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/7G0vAripWa0?si=2fPIZaKBuQOMR1F0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>      </div>
+    </main>
+
+    <script>
+      function toggleEmbed() {
+        var embedContainer = document.getElementById("embed-container");
+        
+        // Toggle the display of the embed container
+        if (embedContainer.style.display === "none" || embedContainer.style.display === "") {
+          embedContainer.style.display = "block"; // Show the embed
+        } else {
+          embedContainer.style.display = "none"; // Hide the embed
+        }
+      }
+    </script>
+  </body>
+</html>
