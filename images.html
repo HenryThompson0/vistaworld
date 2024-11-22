@@ -70,51 +70,48 @@
   </header>
 
   <div class="gallery" id="gallery">
+    <!-- Initial images will appear here, and new ones will be added dynamically -->
   </div>
 
-  <button onclick="fetchRandomImages()" style="margin: 20px; padding: 10px 20px; font-size: 1.2em;">Load More Images</button>
+  <button onclick="fetchRandomImages()" style="margin: 20px; padding: 10px 20px; font-size: 1.2em; background-color: darkblue;">Load Images</button>
 
   <script>
     const accessToken = '7ccc89310593a87153bc1cb0f9eca6d65138f933'; // Imgur Access Token
     const gallery = document.getElementById('gallery');
   
     async function fetchRandomImages() {
-  try {
-    const response = await fetch('https://api.imgur.com/3/gallery/random/random/', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    });
-
-    const data = await response.json();
-
-    // Clear the gallery for testing (optional)
-    // gallery.innerHTML = '';
-
-    // Process and display images
-    data.data.forEach(item => {
-      // Check if the item is safe for work (NSFW flag is false or undefined)
-      if (!item.nsfw) {
-        // Check if the item has an `images` array and the first image is valid
-        if (item.images && item.images.length > 0) {
-          const firstImage = item.images[0];
-
-          // Ensure the image type is valid (e.g., starts with "image/")
-          if (firstImage.type && firstImage.type.startsWith('image/')) {
-            const imgElement = document.createElement('img');
-            imgElement.src = firstImage.link; // Image link
-            imgElement.alt = item.title || 'Random Imgur Image'; // Title as alt text
-            imgElement.classList.add('gallery-img'); // Add a class for styling
-            gallery.appendChild(imgElement);
+      try {
+        const response = await fetch('https://api.imgur.com/3/gallery/random/random/', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
           }
-        }
-      }
-    });
-  } catch (error) {
-    console.error('Error fetching images:', error);
-  }
-}
+        });
 
+        const data = await response.json();
+
+        // Process and display images
+        data.data.forEach(item => {
+          // Check if the item is safe for work (NSFW flag is false or undefined)
+          if (!item.nsfw) {
+            // Check if the item has an `images` array and the first image is valid
+            if (item.images && item.images.length > 0) {
+              const firstImage = item.images[0];
+
+              // Ensure the image type is valid (e.g., starts with "image/")
+              if (firstImage.type && firstImage.type.startsWith('image/')) {
+                const imgElement = document.createElement('img');
+                imgElement.src = firstImage.link; // Image link
+                imgElement.alt = item.title || 'Random Imgur Image'; // Title as alt text
+                imgElement.classList.add('gallery-img'); // Add a class for styling
+                gallery.appendChild(imgElement); // Append the new image to the gallery
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+    }
   </script>
 </body>
 </html>
