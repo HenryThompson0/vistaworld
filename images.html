@@ -40,6 +40,7 @@
       border-radius: 10px;
       border: 2px solid white;
       transition: transform 0.3s ease;
+      cursor: pointer;
     }
 
     .gallery img:hover {
@@ -63,7 +64,7 @@
     }
 
     button {
-        color: aliceblue;
+      color: aliceblue;
     }
   </style>
 </head>
@@ -71,21 +72,30 @@
   <header>
     <h1>Image Gallery</h1>
     <a href="index.html">Back</a>
+    <div style="margin-top: 20px;">
+      <input id="tagInput" type="text" placeholder="Enter tag" style="padding: 10px; font-size: 1em; width: 200px;">
+      <button onclick="fetchImagesByTag()" style="padding: 10px 20px; font-size: 1.2em; background-color: #666; outline-color: white;">Search</button>
+    </div>
   </header>
 
   <div class="gallery" id="gallery">
-    <!-- Initial images will appear here, and new ones will be added dynamically -->
+    <!-- Images will appear here -->
   </div>
-
-  <button onclick="fetchRandomImages()" style="margin: 20px; padding: 10px 20px; font-size: 1.2em; background-color: #666; outline-color: white; text-decoration-color: aliceblue;">Load Images</button>
 
   <script>
     const accessToken = '7ccc89310593a87153bc1cb0f9eca6d65138f933'; // Imgur Access Token
     const gallery = document.getElementById('gallery');
-  
-    async function fetchRandomImages() {
+
+    async function fetchImagesByTag() {
+      const tag = document.getElementById('tagInput').value.trim(); // Get the user input
+
+      if (!tag) {
+        alert('Please enter a tag.');
+        return;
+      }
+
       try {
-        const response = await fetch('https://api.imgur.com/3/gallery/random/random/', {
+        const response = await fetch(`https://api.imgur.com/3/gallery/t/${tag}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`
           }
@@ -93,8 +103,17 @@
 
         const data = await response.json();
 
+        // Clear the gallery before loading new images
+        gallery.innerHTML = '';
+
+        // Check if there are items to display
+        if (!data.data || !data.data.items || data.data.items.length === 0) {
+          gallery.innerHTML = '<p>No images found for this tag.</p>';
+          return;
+        }
+
         // Process and display images
-        data.data.forEach(item => {
+        data.data.items.forEach(item => {
           // Check if the item is safe for work (NSFW flag is false or undefined)
           if (!item.nsfw) {
             // Check if the item has an `images` array and the first image is valid
@@ -103,19 +122,25 @@
 
               // Ensure the image type is valid (e.g., starts with "image/")
               if (firstImage.type && firstImage.type.startsWith('image/')) {
+                const linkElement = document.createElement('a');
+                linkElement.href = `https://imgur.com/gallery/${item.id}`; // Imgur link to the gallery
+                linkElement.target = '_blank'; // Open in a new tab
+
                 const imgElement = document.createElement('img');
                 imgElement.src = firstImage.link; // Image link
-                imgElement.alt = item.title || 'Random Imgur Image'; // Title as alt text
-                imgElement.classList.add('gallery-img'); // Add a class for styling
-                gallery.appendChild(imgElement); // Append the new image to the gallery
+                imgElement.alt = item.title || `Image tagged with ${tag}`; // Title as alt text
+
+                linkElement.appendChild(imgElement); // Append image to the link
+                gallery.appendChild(linkElement); // Append the link to the gallery
               }
             }
           }
         });
       } catch (error) {
-        console.error('Error fetching images:', error);
+        console.error('Error fetching images by tag:', error);
+        gallery.innerHTML = '<p>Error fetching images. Please try again.</p>';
       }
     }
-  </script>
+  </script>  
 </body>
 </html>
