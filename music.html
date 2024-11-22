@@ -13,6 +13,7 @@
             height: 100vh;
             background-image: url('cloudy.gif');
             margin: 0;
+            flex-direction: column;
         }
         .password-container {
             text-align: center;
@@ -20,6 +21,8 @@
             border: 1px solid #ccc;
             background-image: url('surreal.gif');
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px; /* You can adjust the width of the container */
         }
         input[type="password"] {
             padding: 10px;
@@ -72,6 +75,14 @@
         .file-list a:hover {
             color: #d1e1f3;
         }
+        /* Back button styles for fixed position at the bottom of the page */
+        .back-button {
+            position: fixed;
+            bottom: 20px; /* Adjust to control vertical position */
+            left: 50%;
+            transform: translateX(-50%); /* Centers the button */
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -80,15 +91,21 @@
     <h2>Password</h2>
     <input type="password" id="password" placeholder="Password">
     <button onclick="checkPassword()">Submit</button>
+
+    <!-- Music content goes here, but initially hidden -->
+    <div class="music-content" id="musicContent">
+        <h3>Granted</h3>
+        <p>Downloadable Music Files:</p>
+        <ul class="file-list" id="fileList">
+            <!-- Files will be displayed here after login -->
+        </ul>
+    </div>
 </div>
 
-<div class="music-content" id="musicContent">
-    <h3>Granted</h3>
-    <p>Downloadable Music Files:</p>
-    <ul class="file-list" id="fileList">
-        <!-- Files will be displayed here after login -->
-    </ul>
-</div>
+<!-- Back Button (as an image) -->
+<a href="index.html">
+    <img src="https://raw.githubusercontent.com/HenryThompson0/vistaworld/main/back2.gif" alt="Back" class="back-button">
+</a>
 
 <script>
     function checkPassword() {
@@ -99,9 +116,11 @@
         
         // Check the entered password
         if (password === "1234") {
-            // Hide the password container (input field and button)
-            passwordContainer.style.display = 'none';
-            
+            // Hide only the password input field and button
+            passwordContainer.querySelector('input').style.display = 'none';
+            passwordContainer.querySelector('button').style.display = 'none';
+            passwordContainer.querySelector('h2').style.display = 'none';
+
             // Show the music content
             musicContent.style.display = 'block';
 
