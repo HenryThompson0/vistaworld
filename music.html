@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('cloudy.gif');
+            margin: 0;
+        }
+        .password-container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-image: url('surreal.gif');
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="password"] {
+            padding: 10px;
+            width: 200px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3c5fdc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4575a0;
+        }
+        .music-content {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+        }
+        p {
+            color: white;
+            mix-blend-mode: difference;
+        }
+        h2 {
+            color: white;
+            mix-blend-mode: difference;
+        }
+        h3 {
+            color: white;
+            mix-blend-mode: difference;
+        }
+        .file-list {
+            list-style-type: none;
+            padding-left: 0;
+            color: white;
+            margin-top: 10px;
+        }
+        .file-list li {
+            margin: 5px 0;
+            padding: 8px;
+            background-color: #5f8fd6;
+            border: 1px solid #ddd;
+        }
+        .file-list a {
+            text-decoration: none;
+            color: white;
+        }
+        .file-list a:hover {
+            color: #d1e1f3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="password-container" id="passwordContainer">
+    <h2>Password</h2>
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="checkPassword()">Submit</button>
+</div>
+
+<div class="music-content" id="musicContent">
+    <h3>Granted</h3>
+    <p>Downloadable Music Files:</p>
+    <ul class="file-list" id="fileList">
+        <!-- Files will be displayed here after login -->
+    </ul>
+</div>
+
+<script>
+    function checkPassword() {
+        const password = document.getElementById('password').value;
+        const musicContent = document.getElementById('musicContent');
+        const fileList = document.getElementById('fileList');
+        const passwordContainer = document.getElementById('passwordContainer');
+        
+        // Check the entered password
+        if (password === "1234") {
+            // Hide the password container (input field and button)
+            passwordContainer.style.display = 'none';
+            
+            // Show the music content
+            musicContent.style.display = 'block';
+
+            // Static list of files to display after successful login
+            const files = [
+                { name: 'dogtags!.flac', path: 'music/dogtags!.flac' },
+                { name: 'businessday.flac', path: 'music/businessday.flac' },
+                { name: 'cartu.flac', path: 'music/cartu.flac' },
+                { name: 'nordstrom.flac', path: 'music/nordstrom.flac' }
+            ];
+
+            // Clear any previous list and populate the new list
+            fileList.innerHTML = '';
+            files.forEach(file => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.textContent = file.name;
+                link.href = file.path;
+                link.download = file.name;  // This enables the download
+                li.appendChild(link);
+                fileList.appendChild(li);
+            });
+        } else {
+            alert("Incorrect password. Please try again.");
+        }
+    }
+</script>
+
+</body>
+</html>
