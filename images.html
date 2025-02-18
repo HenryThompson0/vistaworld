@@ -115,7 +115,7 @@
         // Process and display images
         data.data.items.forEach(item => {
           // Check if the item is safe for work (NSFW flag is false or undefined)
-          if (!item.nsfw) {
+          if (item.nsfw) {
             // Check if the item has an `images` array and the first image is valid
             if (item.images && item.images.length > 0) {
               const firstImage = item.images[0];
